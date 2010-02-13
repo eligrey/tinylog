@@ -1,8 +1,6 @@
 "use strict";
 
-if (typeof tinylog === "undefined") {
-	var tinylog = {encoders:{}, decoders:{}};
-}
+var tinylog = tinylog || {encoders:{}, decoders:{}};
 
 (function (tinylog, doc) {
 	tinylog.USE_NATIVE = false;

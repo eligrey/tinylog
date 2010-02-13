@@ -18,13 +18,8 @@
 
 "use strict";
 
-if (typeof tinylog === "undefined") {
-	var tinylog = {encoders:{}, decoders:{}};
-}
-
-if (typeof console === "undefined") {
-	var console = {};
-}
+var tinylog = tinylog || {encoders:{}, decoders:{}},
+    console = console || {};
 
 (function (tinylog, console) {
 
