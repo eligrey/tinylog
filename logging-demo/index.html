@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>tinylog logging demo</title>
+<link rel="stylesheet" type="text/css" href="../themes/default.tinylog.css" />
+</head>
+<body>
+	<div>
+		<label for="message">Message: </label>
+		<textarea id="message" style="resize: both"></textarea>
+	</div>
+	<div>
+		<button id="log-button">Log</button>
+	</div>
+	<div>
+		<label for="encoding">Format: </label>
+		<select id="encoding">
+			<option selected="selected" value="raw">raw</option>
+			<option value="json">JSON</option>
+		</select>
+	</div>
+	<div>
+		<input id="compression" type="checkbox" checked="checked">
+		<label for="compression"> DEFLATE Compression</label>
+	</div>
+<script type="text/javascript" src="logging-demo.js"></script>
+<script type="text/javascript" src="../tinylog.min.js"></script>
+<script type="text/javascript" src="../encoders/deflate.tinylog.min.js"></script>
+</body>
+</html>

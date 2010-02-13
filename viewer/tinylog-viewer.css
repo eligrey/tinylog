@@ -1,0 +1,138 @@
+/* Thanks to incluye of joeldt.net for the tinylog viewer CSS. */
+
+@font-face {
+	font-family: PTSansCaptionBold;
+	src: local('PT Sans Caption Bold'),
+	     local('PTSans-CaptionBold'),
+	     url('PT_Sans_Caption_Bold.ttf') format('truetype');
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	min-height: 100%;
+}
+
+body {
+	font: 18px/27px PTSansCaptionBold, Arial, sans-serif;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#d1d1d1));
+	background-image: -moz-linear-gradient(-90deg, #ededed, #d1d1d1);
+	background-image: linear-gradient(-90deg, #ededed, #d1d1d1);
+}
+
+#main {
+	padding-top: 30px;
+	height: 136px;
+	left: 50%;
+	position: absolute;
+	top: 30%;
+	margin-top: -68px;
+	margin-left: -193px;
+	text-align: center;
+	overflow: hidden;
+}
+
+h1 {
+	font-size: 54px;
+	color: #929292;
+	text-shadow: 0px 2px 2px #595959;
+	letter-spacing: -2px;
+}
+
+#logfile {
+	display: block;
+	font-size: 30px;
+	height: 55px;
+	margin: 0 0 0 -185px;
+	position: absolute;
+	opacity: 0;
+}
+
+#logfile, #fakeinput {
+	margin-top: 40px;
+}
+
+#fakeinput {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#7c7c7c), to(#a3a3a3));
+	background-image: -moz-linear-gradient(-90deg, #7c7c7c, #a3a3a3);
+	background-image: linear-gradient(-90deg, #7c7c7c, #a3a3a3);
+	border: 1px solid #595959;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 0 #eee;
+	-moz-box-shadow: 0 1px 0 #eee;
+	box-shadow: 0 1px 0 #eee;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+#filename {
+	color: #f5f5f5;
+	display: block;
+	float: left;
+	font-size: 18px;
+	line-height: 53px;
+	max-width: 198px;
+	padding: 0 18px;
+	text-shadow: 0 1px 1px #555555;
+	white-space: nowrap;
+}
+
+#viewlog {
+	cursor: pointer;
+	display: block;
+	color: #3e3e3e;
+	text-shadow: 0 1px 0 #438EB9;
+	padding: 13px 12px 11px;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#428dbd), to(#3568a6));
+	background-image: -moz-linear-gradient(-90deg, #428dbd, #3568a6);
+	background-image: linear-gradient(-90deg, #428dbd, #3568a6);
+	border-bottom: 1px solid #4394c0;
+	border-right: 1px solid #4aa2c9;
+	border-top: 1px solid #a7d4e5;
+	border-left: 1px solid #5ab2d9;
+	-moz-border-radius: 0px 4px 4px 0px;
+	border-radius: 0px 4px 4px 0px;
+	width: 123px;
+	float: right;
+	-webkit-box-shadow: -1px 0 0 #666;
+	-moz-box-shadow: -1px 0 0 #666;
+	box-shadow: -1px 0 0 #666;
+}
+
+#fakeinput.hover > #viewlog {
+	background-image: -webkit-linear(linear, left top, left bottom, from(#529dcd), to(#4578b6));
+	background-image: -moz-linear-gradient(-90deg, #529dcd, #4578b6);
+	background-image: linear-gradient(-90deg, #529dcd, #4578b6);
+	border-bottom: 1px solid #53a4d0;
+	border-right: 1px solid #5ab2d9;
+	border-left: 1px solid #5ab2d9;
+	border-top: 1px solid #b7e4f5;
+	text-shadow: 0 1px 0 #539EC9;
+}
+
+
+/* custom tinylog CSS to make the tinylog into a full-viewport app */
+.tinylog-container {
+	height: 100%;
+}
+
+.tinylog-container {
+	background-color: rgba(255, 255, 255, .7);
+}
+
+.tinylog-entry {
+	border-bottom: 1px solid darkgray;
+	min-height: 18px;
+	font-size: 15px;
+}
+
+.tinylog-entry:before {
+	display: block;
+	content: attr(data-time);
+	text-align: right;
+	margin-right: 1em;
+}
