@@ -1,4 +1,4 @@
-*tinylog* is a minimalistic yet extensible logging platform.
+tinylog is a minimalistic logging platform.
 
 
 Supported Browsers
