@@ -176,7 +176,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 	};
 	
 	decoders.json = function (data) {
-		var log = JSON.parse(decodeUTF8(data.substr(data.indexOf("json\0") + 1))),
+		var log = JSON.parse(decodeUTF8(data)),
 		i = log.length;
 		
 		while (i--) {
