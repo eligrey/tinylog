@@ -134,5 +134,4 @@ h1 {
 	display: block;
 	content: attr(data-time);
 	text-align: right;
-	margin-right: 1em;
 }
