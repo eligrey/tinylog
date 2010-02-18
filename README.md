@@ -11,12 +11,3 @@ Only browsers that support the [W3C File API] can use the tinylog viewer app.
 
 
   [W3C File API]: http://www.w3.org/TR/FileAPI/
-  
-<!--
-
-API
----
-
-TODO: API
-
--->
