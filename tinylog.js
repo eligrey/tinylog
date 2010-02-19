@@ -1,7 +1,7 @@
 /*
  * tinylog.js
  *
- * 2010-02-12
+ * 2010-02-18
  * 
  * By Elijah Grey, http://eligrey.com
  *
@@ -24,11 +24,17 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 (function (tinylog, console) {
 
 	var undef    = "undefined",
-	blankGIF     = "GIF89a\1\0\1\0\x91\xFF\0\xFF\xFF\xFF\0\0\0\xC0\xC0\xC0\0\0" +
-		           "\0!\xF9\x04\1\0\0\2\0,\0\0\0\0\1\0\1\0\0\2\2T\1\0;",
+	stringFromCharCodes = function () {
+		return String.fromCharCode.apply(String, arguments);
+	},
+	NUL          = stringFromCharCodes(0),
+	blankGIF     = "GIF89a" + stringFromCharCodes(
+		1, 0, 1, 0, 145, 255, 0, 255, 255, 255, 0, 0, 0, 192, 192, 192, 0, 0, 0, 33,
+		249, 4, 1, 0, 0, 2, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 2, 84, 1, 0, 59
+	),
 	False        = !1,
 	True         = !0,
-	nullBytes    = /\0/g,
+	nullBytes    = new RegExp(NUL, "g"),
 	log          = tinylog.logEntries = [],
 	math         = Math,
 	base64       = btoa,
@@ -57,9 +63,9 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 			buffer.push(i >>> pos * 8 & 0xFF);
 		}
 
-		return String.fromCharCode.apply(String, buffer);
+		return stringFromCharCodes(buffer);
 	},
-	rawLog = tinylog.raw = function (logData) {
+	rawLog = function (logData) {
 		if (!logData) {
 			logData = log;
 		}
@@ -77,7 +83,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 			);
 		}
 		
-		return buffer.join("\0") + "\0";
+		return buffer.join(NUL) + NUL;
 	},
 	observer = function (obj, event, handler) {
 		if (obj.addEventListener) {
@@ -139,7 +145,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 	};
 	
 	encoders.raw = function (log) {
-		return "raw\0" + rawLog(log);
+		return "raw" + NUL + rawLog(log);
 	};
 	
 	decoders.raw = function (data) {
@@ -157,7 +163,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 				date = date << 8 | data.charCodeAt(pos);
 			}
 			
-			match = data.substr(pos).indexOf("\0");
+			match = data.substr(pos).indexOf(NUL);
 			
 			log.push([
 				date * 1000, // convert seconds to milliseconds
@@ -172,7 +178,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 	};
 	
 	encoders.json = function (log) {
-		return "json\0" + encodeUTF8(JSON.stringify(log));
+		return "json" + NUL + encodeUTF8(JSON.stringify(log));
 	};
 	
 	decoders.json = function (data) {
@@ -196,7 +202,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 			data = data.substr(blankGIF.length);
 		}
 		
-		var index = data.indexOf("\0"),
+		var index = data.indexOf(NUL),
 		encoding  = data.substr(0, index);
 		
 		if (decoders[encoding]) {
