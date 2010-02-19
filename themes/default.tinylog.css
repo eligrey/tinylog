@@ -55,12 +55,12 @@
 	color: #222;
 }
 
-.tinylog-button:not(:first-child) {
-	border-left: 1px solid black;
+.tinylog-button:before {
+	content: attr(data-symbol);
 }
 
-.tinylog-close-button:before {
-	content: attr(data-symbol);
+.tinylog-button:not(:first-child) {
+	border-left: 1px solid black;
 }
 
 .tinylog-close-button {
@@ -87,7 +87,6 @@
 
 .tinylog-save-button:before {
 	color: white;
-	content: attr(data-symbol);
 }
 
 .tinylog-save-button {
