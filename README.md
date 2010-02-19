@@ -26,10 +26,10 @@ them) containing their type if they are not functions or return type if they are
 ### Methods
 
 <dl>
-  <dt><code>tinylog.<strong title="void">log</strong>([<em title="String">message-1</em>], [<em title="String">message-2</em>], [...])</code></dt>
+  <dt><code>tinylog.<strong title="void">log</strong>([<em title="String">message-1</em>], [<em title="String">message-2</em>], [<em title="String">...</em>])</code></dt>
   <dd>
     Forwards the messages (concatenated together and separated with spaces) to
-    <code>tinylog.postEntry</code>.
+    <code>tinylog.<strong title="void">postEntry</strong></code>.
   </dd>
   
   <dt>
@@ -37,19 +37,23 @@ them) containing their type if they are not functions or return type if they are
     <em title="String">message</em>)</code>
   </dt>
   <dd>
-    Adds <code>message</code> to the log and with metadata from <code>date</code>. You
-    can easily define your own <code>tinylog.postEntry</code> method to integrate tinylog
-    into any platform.
+    Adds <code><em title="String">message</em></code> to the log and with metadata from
+    <code><em title="Date">date</em></code>. You can easily define your own
+    <code>tinylog.<strong title="void">postEntry</strong></code> method to integrate
+    tinylog into any platform.
   </dd>
   
   <dt><code>tinylog.<strong title="String">encode</strong>([<em title="Array">log</em>])</code></dt>
   <dd>
-    Returns <code>log</code> (defaults to <code>tinylog.logEntries</code>) encoded using
-    the encoding specified by <code>tinylog.encoding</code>.
+    Returns <code><em title="Array">log</em></code> (defaults to
+    <code>tinylog.<strong title="Array">logEntries</strong></code>) encoded using the
+    encoding specified by <code>tinylog.<strong title="String">encoding</strong></code>.
   </dd>
   
   <dt><code>tinylog.<strong title="Array">decode</strong>(<em title="String">data</em>)</code></dt>
-  <dd>Returns the decoded tinylog array from <code>data</code>.</dd>
+  <dd>
+    Returns the decoded tinylog array from <code><em title="String">data</em></code>.
+  </dd>
   
   <dt><code>tinylog.<strong title="void">clear</strong>()</code></dt>
   <dd>Clears the log of all output if possible.</dd>
@@ -64,7 +68,8 @@ them) containing their type if they are not functions or return type if they are
   <dt><code>tinylog.<strong title="Array">logEntries</strong></code></dt>
   <dd>
     An array of the currently displayed log. It is in the format of
-    <code>[[date-1, message-1], [date-2, message-2], ...]</code>.
+    <code>[[<em title="Date">date-1</em>, <em title="String">message-1</em>],
+    [<em title="Date">date-2</em>, <em title="String">message-2</em>], ...]</code>.
   </dd>
 </dl>
 
@@ -97,11 +102,13 @@ them) containing their type if they are not functions or return type if they are
 
 ### Using Encoders &amp; Decoders
 
-Adding a method with the name of an encoding to `tinylog.encoders` will make it the
-encoder for that encoding. It will be passed an array which contains the data for a
-tinylog in the format of `tinylog.logEntries`. Likewise, adding a method with the name
-of an encoding to `tinylog.decoders` will make it the decoder for that encoding. Decoders
-are passed strings which are the data to be decoded.
+Adding a method with the name of an encoding to
+<code>tinylog.<strong title="Object">encoders</strong></code> will make it the encoder
+for that encoding. It will be passed an array which contains the data for a tinylog in
+the format of <code>tinylog.<strong title="Array">logEntries</strong></code>. Likewise,
+adding a method with the name of an encoding to
+<code>tinylog.<strong title="Object">decoders</strong></code> will make it the decoder
+for that encoding. Decoders are passed strings which are the data to be decoded.
 
 
 Theming tinylog
