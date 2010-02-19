@@ -40,7 +40,10 @@ them) containing their type if they are not functions or return type if they are
   </dd>
   
   <dt>tinylog.<strong title="String">encode</strong>([<em title="Object">log</em>])</dt>
-  <dd></dd>
+  <dd>
+    Returns <code>log</code> (defaults to <code>tinylog.logEntries</code>) encoded using
+    the encoding specified by <code>tinylog.encoding</code>.
+  </dd>
   
   <dt>tinylog.<strong title="Array">decode</strong>(<em title="String">data</em>)</dt>
   <dd>Returns the decoded tinylog array from <code>data</code>.</dd>
@@ -73,6 +76,18 @@ them) containing their type if they are not functions or return type if they are
     <code>"foo+bar"</code> would first encode the log using the foo encoding, and encode
     the foo-encoded data using bar. This is useful for specifying an encoding and a
     compression encoding (such as <code>"json+deflate"</code>).
+  </dd>
+  
+  <dt>tinylog.<strong title="Boolean">USE_NATIVE</strong></dt>
+  <dd>
+    An option that when specified explicitly as <code>false</code>, native consoles are
+    not used when available.
+  </dd>
+  
+  <dt>tinylog.<strong title="Boolean">AUTO_DISPLAY</strong></dt>
+  <dd>
+    An option that when is <code>true</code>, the tinylog log is automatically displayed
+    in the page as soon as possible.
   </dd>
 </dl>
 
