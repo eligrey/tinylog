@@ -26,8 +26,11 @@ them) containing their type if they are not functions or return type if they are
 ### Methods
 
 <dl>
-  <dt><code>tinylog.<strong title="void">log</strong>(<em title="String">message</em>)</code></dt>
-  <dd>Calls <code>tinylog.postEntry(new Date, message)</code>.</dd>
+  <dt><code>tinylog.<strong title="void">log</strong>([<em title="String">message-1</em>], [<em title="String">message-2</em>], [...])</code></dt>
+  <dd>
+    Forwards the messages (concatenated together and separated with spaces) to
+    <code>tinylog.postEntry</code>.
+  </dd>
   
   <dt>
     <code>tinylog.<strong title="void">postEntry</strong>(<em title="Date">date</em>,
@@ -39,37 +42,37 @@ them) containing their type if they are not functions or return type if they are
     into any platform.
   </dd>
   
-  <dt>tinylog.<strong title="String">encode</strong>([<em title="Object">log</em>])</dt>
+  <dt><code>tinylog.<strong title="String">encode</strong>([<em title="Array">log</em>])</code></dt>
   <dd>
     Returns <code>log</code> (defaults to <code>tinylog.logEntries</code>) encoded using
     the encoding specified by <code>tinylog.encoding</code>.
   </dd>
   
-  <dt>tinylog.<strong title="Array">decode</strong>(<em title="String">data</em>)</dt>
+  <dt><code>tinylog.<strong title="Array">decode</strong>(<em title="String">data</em>)</code></dt>
   <dd>Returns the decoded tinylog array from <code>data</code>.</dd>
   
-  <dt>tinylog.<strong title="void">clear</strong>()</dt>
+  <dt><code>tinylog.<strong title="void">clear</strong>()</code></dt>
   <dd>Clears the log of all output if possible.</dd>
   
-  <dt>tinylog.<strong title="void">uninit</strong>()</dt>
-  <dd>Uninitializes tinylog by removing all traces of tinylog from the DOM.</dd>
+  <dt><code>tinylog.<strong title="void">uninit</strong>()</code></dt>
+  <dd>Removes all traces of tinylog from the DOM, including any event listeners.</dd>
 </dl>
 
 ### Fields
 
 <dl>
-  <dt>tinylog.<strong title="Array">logEntries</strong></dt>
+  <dt><code>tinylog.<strong title="Array">logEntries</strong></code></dt>
   <dd>
     An array of the currently displayed log. It is in the format of
     <code>[[date-1, message-1], [date-2, message-2], ...]</code>.
   </dd>
-</dt>
+</dl>
 
 
 ### Configuration
 
 <dl>
-  <dt>tinylog.<strong title="String">encoding</strong></dt>
+  <dt><code>tinylog.<strong title="String">encoding</strong></code></dt>
   <dd>
     A string representing the encodings to use when encoding a log separated by plus
     signs. The encodings are applied in order. An example encoding of
@@ -78,13 +81,13 @@ them) containing their type if they are not functions or return type if they are
     compression encoding (such as <code>"json+deflate"</code>).
   </dd>
   
-  <dt>tinylog.<strong title="Boolean">USE_NATIVE</strong></dt>
+  <dt><code>tinylog.<strong title="Boolean">USE_NATIVE</strong></code></dt>
   <dd>
     An option that when specified explicitly as <code>false</code>, native consoles are
     not used when available.
   </dd>
   
-  <dt>tinylog.<strong title="Boolean">AUTO_DISPLAY</strong></dt>
+  <dt><code>tinylog.<strong title="Boolean">AUTO_DISPLAY</strong></code></dt>
   <dd>
     An option that when is <code>true</code>, the tinylog log is automatically displayed
     in the page as soon as possible.
