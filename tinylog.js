@@ -1,7 +1,7 @@
 /*
- * tinylog.js
+ * tinylog JavaScript Library
  *
- * 2010-02-18
+ * 2010-02-19
  * 
  * By Elijah Grey, http://eligrey.com
  *
@@ -11,20 +11,20 @@
 
 /*global console, print, document, Image, btoa, escape, unescape */
 
-/*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true, strict: true, newcap: true, immed: true, maxerr: 200 */
-
-// JSLint note: Ignore the first three, all "Bad escapement", and "Missing '()' invoking
-// a constructor" errors.
+/*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true, strict: true,
+newcap: true, immed: true, maxerr: 200 */
 
 "use strict";
 
-var tinylog = tinylog || {encoders:{}, decoders:{}},
-    console = console || {};
+var tinylog = tinylog || {encoders:{}, decoders:{}}, console;
+
+if (!console) {
+	console = {};
+}
 
 (function (tinylog, console) {
 
-	var undef    = "undefined",
-	stringFromCharCodes = function () {
+	var stringFromCharCodes = function () {
 		return String.fromCharCode.apply(String, arguments);
 	},
 	NUL          = stringFromCharCodes(0),
@@ -217,7 +217,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 			storeEntry(date, message);
 			console.log(message);
 		};
-	} else if (typeof document !== undef) { // DOM document
+	} else if (typeof document !== "undefined") { // DOM document
 		createLog = tinylog.postEntry = function (date, message) {
 		// don't show output log until called once
 		
@@ -384,7 +384,7 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 		buttons[$class] = $tinylogSpace + $tinylog + "-buttons-container";
 		
 		saveButton[$class] = $tinylogSpace + $tinylog + "-button " + $saveButton;
-		saveButton[$title]     = "Click or open a context menu here to save log";
+		saveButton[$title] = "Click or open a context menu here to save log";
 		setAttr(saveButton, $data + "symbol", "\u2B07");
 		
 		saveImage[$class]  = $tinylogSpace + $saveButton + "-image";
@@ -392,16 +392,16 @@ var tinylog = tinylog || {encoders:{}, decoders:{}},
 		
 		closeButton[$class] = $tinylogSpace + $tinylog + "-button " + $tinylog +
 		                        "-close-button";
-		closeButton[$title]     = "Close Log";
+		closeButton[$title] = "Close Log";
 		setAttr(closeButton, $data + "symbol", "X");
 		
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
-		resizer[$title]     = "Double click here to toggle log minimization";
+		resizer[$title] = "Double-click here to toggle log minimization";
 		
 		docElem.insertBefore(container, docElem.firstChild);
 		
 		tinylog.postEntry = function (date, message) {
-			var entry  = append(output, createElement($div));
+			var entry = append(output, createElement($div));
 			
 			entry[$title] = date.toLocaleString();
 			setAttr(entry, $data + "time", date.toLocaleTimeString());
