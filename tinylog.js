@@ -9,7 +9,7 @@
  *   See COPYING.md
  */
 
-/*global console, print, document, Image, btoa, escape, unescape */
+/*global print, document, Image, btoa, escape, unescape */
 
 /*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true, strict: true,
 newcap: true, immed: true, maxerr: 200 */
@@ -137,7 +137,7 @@ if (!console) {
 	tinylog.postEntry = storeEntry;
 	
 	tinylog.log = function () {
-		tinylog.postEntry(new Date, Array.prototype.slice.call(arguments).join(" "));
+		tinylog.postEntry(new Date(), Array.prototype.slice.call(arguments).join(" "));
 	};
 	
 	tinylog.clear = function () {
@@ -255,7 +255,7 @@ if (!console) {
 		output               = append(container, createElement($div)),
 		buttons              = append(container, createElement($div)),
 		saveButton           = append(buttons, createElement($div)),
-		saveImage            = append(saveButton, new Image),
+		saveImage            = append(saveButton, new Image()),
 		closeButton          = append(buttons, createElement($div)),
 		resizingLog          = False,
 		previousHeight       = False,
@@ -438,7 +438,7 @@ if (!console) {
 		try { // intercept all console.log calls
 			// Firebug may have problems with redefining console.log
 			console.log = function () {
-				storeEntry(new Date, Array.prototype.slice.call(arguments).join(" "));
+				storeEntry(new Date(), Array.prototype.slice.call(arguments).join(" "));
 				consoleLog.apply(console, arguments);
 			};
 		} catch (e) {}
