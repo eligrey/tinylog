@@ -228,14 +228,14 @@ if (!console) {
 		$div          = "div",
 		$style        = "style",
 		$class        = "className",
+		$setAttr      = "setAttribute",
 		$data         = "data-",
 		$title        = "title",
 		$tinylog      = "tinylog",
 		$tinylogSpace = $tinylog + " ",
 		$saveButton   = $tinylog + "-save-button",
-		
-		containerNotResizing = $tinylogSpace + $tinylog + "-container",
-		containerResizing    = containerNotResizing + " " + $tinylog + "-resizing",
+		$tinylogEntry = $tinylogSpace + "tinylog-entry",
+		$tinylogEntryText = $tinylogEntry + "-text",
 		
 		append = function (to, elem) {
 			return to.appendChild(elem);
@@ -245,9 +245,6 @@ if (!console) {
 		},
 		createTextNode = function (text) {
 			return doc.createTextNode(text);
-		},
-		setAttr = function (elem, attr, val) {
-			elem.setAttribute(attr, val);
 		},
 		
 		docElemStyle         = docElem[$style],
@@ -260,8 +257,8 @@ if (!console) {
 		saveButton           = append(buttons, createElement($div)),
 		saveImage            = append(saveButton, new Image),
 		closeButton          = append(buttons, createElement($div)),
-		draggingHandle       = False,
-		previousSize         = False,
+		resizingLog          = False,
+		previousHeight       = False,
 		lastEncoding         = tinylog.encoding,
 		changedSinceUpdate   = True,
 		previousScrollTop,
@@ -277,7 +274,7 @@ if (!console) {
 				lastEncoding       = tinylog.encoding;
 			}
 		},
-		setContainerSize = function (height) {
+		setContainerHeight = function (height) {
 			var viewHeight = view.innerHeight,
 			resizerHeight  = resizer.clientHeight;
 		
@@ -301,41 +298,39 @@ if (!console) {
 		observers = [
 			
 			observer(doc, "mousemove", function (evt) {
-				if (draggingHandle) {
-					setContainerSize(view.innerHeight - evt.clientY);
+				if (resizingLog) {
+					setContainerHeight(view.innerHeight - evt.clientY);
+					output.scrollTop = previousScrollTop;
 				}
 			}),
 		
 			observer(doc, "mouseup", function () {
-				if (draggingHandle) {
-					draggingHandle = False;
-					container[$class] = containerNotResizing;
-					output.scrollTop = previousScrollTop;
+				if (resizingLog) {
+					resizingLog = previousScrollTop = False;
 				}
 			}),
 			
 			// minimize tinylog
 			observer(resizer, "dblclick", function (evt) {
 				evt.preventDefault();
-				if (previousSize) {
-					setContainerSize(previousSize);
-					previousSize = False;
+				if (previousHeight) {
+					setContainerHeight(previousHeight);
+					previousHeight = False;
 				} else {
-					previousSize = container.clientHeight;
+					previousHeight = container.clientHeight;
 					containerStyle.height = "0px";
 				}
 			}),
 			
 			observer(resizer, "mousedown", function (evt) {
 				evt.preventDefault();
-				draggingHandle = True;
+				resizingLog = True;
 				previousScrollTop = output.scrollTop;
-				container[$class] = containerResizing;
 			}),
 			
 			// fix resizing being stuck when context menu opens
 			observer(resizer, "contextmenu", function () {
-				draggingHandle = False;
+				resizingLog = False;
 			}),
 		
 			observer(saveButton, "mouseover", function () {
@@ -377,7 +372,7 @@ if (!console) {
 			tinylog.postEntry = createLog;
 		};
 		
-		container[$class] = containerNotResizing;
+		container[$class] = $tinylogSpace + $tinylog + "-container";
 		
 		output[$class] = $tinylogSpace + $tinylog + "-output";
 		
@@ -385,7 +380,7 @@ if (!console) {
 		
 		saveButton[$class] = $tinylogSpace + $tinylog + "-button " + $saveButton;
 		saveButton[$title] = "Click or open a context menu here to save log";
-		setAttr(saveButton, $data + "symbol", "\u2B07");
+		saveButton[$setAttr]($data + "symbol", "\u2B07");
 		
 		saveImage[$class]  = $tinylogSpace + $saveButton + "-image";
 		updateSavedLog();
@@ -393,23 +388,25 @@ if (!console) {
 		closeButton[$class] = $tinylogSpace + $tinylog + "-button " + $tinylog +
 		                        "-close-button";
 		closeButton[$title] = "Close Log";
-		setAttr(closeButton, $data + "symbol", "X");
+		closeButton[$setAttr]($data + "symbol", "X");
 		
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
-		resizer[$title] = "Double-click here to toggle log minimization";
+		resizer[$title] = "Double-click to toggle log minimization";
 		
 		docElem.insertBefore(container, docElem.firstChild);
 		
 		tinylog.postEntry = function (date, message) {
-			var entry = append(output, createElement($div));
+			var entry = append(output, createElement($div)),
+			entryText = append(entry, createElement($div));
 			
-			entry[$title] = date.toLocaleString();
-			setAttr(entry, $data + "time", date.toLocaleTimeString());
-			entry[$class] = "tinylog tinylog-entry";
+			entry[$title] = date.toLocaleTimeString();
+			entry[$class] = $tinylogEntry;
+			entryText[$class] = $tinylogEntryText;
 			
 			storeEntry(date, message);
 			changedSinceUpdate = True;
-			append(entry, createTextNode(message));
+			
+			append(entryText, createTextNode(message));
 			output.scrollTop = output.scrollHeight;
 		};
 		

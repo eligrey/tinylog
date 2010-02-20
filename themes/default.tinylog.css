@@ -18,9 +18,16 @@
 
 .tinylog-entry {
 	border-bottom: 1px solid #d3d3d3;
-	white-space: pre-wrap;
 	min-height: 16px;
+}
+
+.tinylog-entry-text {
+	white-space: pre-wrap;
 	font-size: 12px;
+	margin-left: 5px;
+	margin-right: 5px;
+	max-width: 100%;
+	overflow: auto;
 }
 
 .tinylog-resizer {
@@ -102,12 +109,4 @@
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#33f), to(blue));
 	background-image: -moz-linear-gradient(-90deg, #33f, blue);
 	background-image: linear-gradient(-90deg, #33f, blue);
-}
-
-.tinylog-container.tinylog-resizing {
-	background-color: rgba(211,211,211, .5);
-}
-
-.tinylog-resizing .tinylog-buttons-container, .tinylog-resizing .tinylog-output {
-	display: none;
 }

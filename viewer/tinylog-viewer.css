@@ -132,6 +132,6 @@ h1 {
 
 .tinylog-entry:before {
 	display: block;
-	content: attr(data-time);
+	content: attr(title);
 	text-align: right;
 }
