@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>tinylog lite logging demo</title>
+</head>
+<body>
+	<div>
+		<label for="message">Message: </label>
+		<textarea id="message" style="resize: both"></textarea>
+	</div>
+	<div>
+		<button id="log-button">Log</button>
+	</div>
+	
+	<script type="text/javascript">
+	var msg = document.getElementById("message");
+	document.getElementById("log-button").addEventListener("click", function () {
+		tinylogLite.log(msg.value);
+	}, false);
+	</script>
+	<script type="text/javascript" src="../tinylog-lite.min.js"></script>
+</body>
+</html>

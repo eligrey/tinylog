@@ -10,6 +10,14 @@ and Opera 10+. More browsers will be officially supported eventually.
 Only browsers that support the [W3C File API][1] can use the tinylog viewer app.
 
 
+tinylog lite
+------------
+
+tinylog lite is a bare-bones implementation of tinylog intended primarily for embedding
+into other libraries. Most features unrelated to just logging messages are not included,
+such as saving logs and theming the UI.
+
+
 Demos
 -----
 
@@ -116,7 +124,6 @@ Theming tinylog
 
 It is very easy to create custom themes using tinylog. Take a look at the
 [default theme][3] to see what classes there are to style.
-
 
 
  [1]: http://www.w3.org/TR/FileAPI/
