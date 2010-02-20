@@ -11,12 +11,11 @@
 
 /*global self */
 
-/*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true, strict: true,
+/*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true,
 newcap: true, immed: true, maxerr: 200 */
 
-"use strict";
-
 var tinylogLite = (function (self) {
+	"use strict";
 
 	var tinylogLite = {},
 	doc             = self.document,
