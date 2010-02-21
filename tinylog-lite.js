@@ -81,6 +81,7 @@ var tinylogLite = (function (self) {
 			fontSize: "12px",
 			margin: "0 5px 0 5px",
 			maxWidth: "100%",
+			whiteSpace: "pre-wrap",
 			overflow: "auto"
 		},
 		
