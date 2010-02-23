@@ -9,31 +9,30 @@
  *   See COPYING.md
  */
 
-/*global self */
+/*global console, tinylog, document, print */
 
 /*jslint onevar: true, undef: true, nomen: true, eqeqeq: true, regexp: true,
 newcap: true, immed: true, maxerr: 200 */
 
-var tinylogLite = (function (self) {
+var tinylogLite = (function () {
 	"use strict";
 
 	var tinylogLite = {},
-	doc             = self.document,
-	tinylog         = self.tinylog,
-	console         = self.console,
-	print           = self.print,
+	undef           = "undefined",
+	func            = "function",
 	False           = !1,
 	True            = !0,
 	log             = "log";
 	
-	if (console && console[log]) { // native console
+	if (typeof console !== undef && typeof console[log] === func) { // native console
 		tinylogLite[log] = function (message) {
 			console[log](message);
 		};
-	} else if (tinylog && tinylog[log]) { // pre-existing tinylog
+	} else if (typeof tinylog !== undef && typeof tinylog[log] === func) {
+		// pre-existing tinylog present
 		tinylogLite[log] = tinylog[log];
-	} else if (doc) { (function () { // DOM document
-		var
+	} else if (typeof document !== undef) { (function () { // DOM document
+		var doc = document,
 		
 		$div   = "div",
 		$style = "style",
@@ -222,7 +221,7 @@ var tinylogLite = (function (self) {
 			var i = observers.length;
 			
 			while (i--) {
-				unobserve.apply(self, observers[i]);
+				unobserve.apply(tinylogLite, observers[i]);
 			}
 			
 			// remove tinylog lite from the DOM
@@ -271,9 +270,9 @@ var tinylogLite = (function (self) {
 	
 	}());
 	
-	} else if (print) { // JS shell
+	} else if (typeof print === func) { // JS shell
 		tinylogLite[log] = print;
 	}
 	
 	return tinylogLite;
-}(self));
+}());
