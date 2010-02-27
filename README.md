@@ -130,4 +130,4 @@ It is very easy to create custom themes using tinylog. Take a look at the
 
  [1]: http://www.w3.org/TR/FileAPI/
  [2]: http://code.eligrey.com/tinylog/
- [3]: themes/default.tinylog.css
+ [3]: http://github.com/eligrey/tinylog/blob/master/themes/default.tinylog.css
