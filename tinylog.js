@@ -1,7 +1,7 @@
 /*
  * tinylog JavaScript Library
  *
- * 2010-02-19
+ * 2010-03-16
  * 
  * By Elijah Grey, http://eligrey.com
  *
@@ -27,26 +27,31 @@ if (!console) {
 	var stringFromCharCodes = function () {
 		return String.fromCharCode.apply(String, arguments);
 	},
-	NUL          = stringFromCharCodes(0),
-	blankGIF     = "GIF89a" + stringFromCharCodes(
+	
+	NUL           = stringFromCharCodes(0),
+	blankGIF      = "GIF89a" + stringFromCharCodes(
 		1, 0, 1, 0, 145, 255, 0, 255, 255, 255, 0, 0, 0, 192, 192, 192, 0, 0, 0, 33,
 		249, 4, 1, 0, 0, 2, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 2, 84, 1, 0, 59
 	),
-	False        = !1,
-	True         = !0,
-	nullBytes    = new RegExp(NUL, "g"),
-	log          = tinylog.logEntries = [],
-	math         = Math,
-	base64       = btoa,
-	encoders     = tinylog.encoders,
-	decoders     = tinylog.decoders,
-	encodeUTF8   = function (data) {
+	blankGIFcheck = new RegExp("^" + blankGIF),
+	nullBytes     = new RegExp(NUL, "g"),
+	
+	log           = tinylog.logEntries = [],
+	math          = Math,
+	base64        = btoa,
+	encoders      = tinylog.encoders,
+	decoders      = tinylog.decoders,
+	
+	False         = !1,
+	True          = !0,
+	
+	encodeUTF8 = function (data) {
 		return unescape(encodeURIComponent(data));
 	},
-	decodeUTF8   = function (data) {
+	decodeUTF8 = function (data) {
 		return decodeURIComponent(escape(data));
 	},
-	storeEntry   = function (date, message) {
+	storeEntry = function (date, message) {
 		log.push([
 			math.floor(date.getTime() / 1000), // remove milliseconds
 			message
@@ -198,7 +203,7 @@ if (!console) {
 	}
 	
 	tinylog.decode = function (data) {
-		if (data.indexOf(blankGIF) !== -1) {
+		if (blankGIFcheck.test(data)) {
 			data = data.substr(blankGIF.length);
 		}
 		
@@ -388,7 +393,7 @@ if (!console) {
 		closeButton[$class] = $tinylogSpace + $tinylog + "-button " + $tinylog +
 		                        "-close-button";
 		closeButton[$title] = "Close Log";
-		closeButton[$setAttr]($data + "symbol", "X");
+		closeButton[$setAttr]($data + "symbol", "\u2716");
 		
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
 		resizer[$title] = "Double-click to toggle log minimization";

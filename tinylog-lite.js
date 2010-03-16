@@ -1,7 +1,7 @@
 /*
  * tinylog lite JavaScript library
  *
- * 2010-02-19
+ * 2010-03-16
  * 
  * By Elijah Grey, http://eligrey.com
  *
@@ -41,7 +41,7 @@ var tinylogLite = (function () {
 		containerStyles = {
 			zIndex: 10000,
 			position: "fixed",
-			bottom: "0px",
+			bottom: 0,
 			width: "100%",
 			height: "15%",
 			fontFamily: "sans-serif",
@@ -62,15 +62,19 @@ var tinylogLite = (function () {
 		},
 		closeButtonStyles = {
 			position: "absolute",
-			top: "0px",
-			right: "15px",
-			border: "1px solid black",
-			borderTop: "none",
+			top: 0,
+			right: "18px",
 			cursor: "pointer",
-			fontWeight: "bold",
+			color: "white",
+			backgroundColor: "#bbb",
 			textAlign: "center",
-			padding: "1px 5px",
-			backgroundColor: "#eb0000"
+			padding: "2px 6px 6px",
+			MozBorderRadius: "4px",
+			borderRadius: "4px",
+			marginTop: "2px",
+			fontSize: "14px",
+			width: "12px",
+			height: "12px"
 		},
 		entryStyles = {
 			borderBottom: "1px solid #d3d3d3",
@@ -78,7 +82,7 @@ var tinylogLite = (function () {
 		},
 		entryTextStyles = {
 			fontSize: "12px",
-			margin: "0 5px 0 5px",
+			margin: "1px 5px 0 5px",
 			maxWidth: "100%",
 			whiteSpace: "pre-wrap",
 			overflow: "auto"
@@ -195,7 +199,7 @@ var tinylogLite = (function () {
 					previousHeight = False;
 				} else {
 					previousHeight = container.clientHeight;
-					containerStyle.height = "0px";
+					containerStyle.height = 0;
 				}
 			}),
 			
@@ -243,7 +247,7 @@ var tinylogLite = (function () {
 		);
 		
 		closeButton[$title] = "Close Log";
-		append(closeButton, createTextNode("X"));
+		append(closeButton, createTextNode("\u2716"));
 		
 		resizer[$title] = "Double-click to toggle log minimization";
 		
