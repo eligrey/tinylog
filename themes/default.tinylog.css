@@ -44,7 +44,7 @@
 	position: absolute;
 	opacity: .35;
 	top: 2px;
-	right: 16px;
+	right: 18px;
 }
 
 .tinylog-buttons-container:hover {
@@ -66,7 +66,9 @@
 }
 
 .tinylog-button:hover {
-	color: #fff;
+  border: 1px solid #999;
+  background-color: #eee;
+	color: #222;
 }
 
 .tinylog-button:before {
@@ -82,28 +84,8 @@
   background-color: #ddd;
 }
 
-.tinylog-close-button:hover {
-  border: 1px solid #999;
-}
-
-/*.tinylog-save-button-image {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-}*/
-
-.tinylog-save-button:before {
-	color: white;
-}
-
 .tinylog-save-button {
 	position: relative;
   background-color: #ddd;
   border: 1px solid #ddd;
-}
-
-.tinylog-save-button:hover {
-  border: 1px solid #999;
 }
