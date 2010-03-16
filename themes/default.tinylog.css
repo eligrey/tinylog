@@ -74,7 +74,7 @@
 }
 
 .tinylog-button:not(:first-child) {
-  margin-left: 5px;
+  margin-left: 3px;
 }
 
 .tinylog-close-button {
