@@ -14,18 +14,21 @@
 	font-family: monospace;
 	overflow: auto;
 	height: 100%;
+  padding-top: 4px;
 }
 
 .tinylog-entry {
 	border-bottom: 1px solid #d3d3d3;
-	min-height: 16px;
+  min-height: 16px;
+  padding-top: 4px;
+  padding-bottom: 2px;
 }
 
 .tinylog-entry-text {
 	white-space: pre-wrap;
 	font-size: 12px;
-	margin-left: 5px;
-	margin-right: 5px;
+	margin-left: 8px;
+	margin-right: 8px;
 	max-width: 100%;
 	overflow: auto;
 }
@@ -40,10 +43,8 @@
 .tinylog-buttons-container {
 	position: absolute;
 	opacity: .35;
-	top: 0px;
-	right: 15px;
-	border: 1px solid black;
-	border-top: none;
+	top: 2px;
+	right: 16px;
 }
 
 .tinylog-buttons-container:hover {
@@ -53,13 +54,19 @@
 .tinylog-button {
 	cursor: pointer;
 	display: inline-block;
-	font-weight: bold;
+	font-weight: normal;
+  color: #fff;
 	text-align: center;
-	padding: 1px 5px;
+	padding: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  width: 12px;
+  height: 12px;
 }
 
 .tinylog-button:hover {
-	color: #222;
+	color: #fff;
 }
 
 .tinylog-button:before {
@@ -67,30 +74,25 @@
 }
 
 .tinylog-button:not(:first-child) {
-	border-left: 1px solid black;
+  margin-left: 5px;
 }
 
 .tinylog-close-button {
-	background-color: #eb0000;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(red), to(#900));
-	background-image: -moz-linear-gradient(-90deg, #f00, #900);
-	background-image: linear-gradient(-90deg, #f00, #900);
+  border: 1px solid #ddd;
+  background-color: #ddd;
 }
 
 .tinylog-close-button:hover {
-	background-color: red;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#f44), to(red));
-	background-image: -moz-linear-gradient(-90deg, #f44, red);
-	background-image: linear-gradient(-90deg, #f44, red);
+  border: 1px solid #999;
 }
 
-.tinylog-save-button-image {
+/*.tinylog-save-button-image {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 	width: 100%;
 	height: 100%;
-}
+}*/
 
 .tinylog-save-button:before {
 	color: white;
@@ -98,15 +100,10 @@
 
 .tinylog-save-button {
 	position: relative;
-	background-color: blue;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(blue), to(#006));
-	background-image: -moz-linear-gradient(-90deg, blue, #006);
-	background-image: linear-gradient(-90deg, blue, #006);
+  background-color: #ddd;
+  border: 1px solid #ddd;
 }
 
 .tinylog-save-button:hover {
-	background-color: #143cdc;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#33f), to(blue));
-	background-image: -moz-linear-gradient(-90deg, #33f, blue);
-	background-image: linear-gradient(-90deg, #33f, blue);
+  border: 1px solid #999;
 }

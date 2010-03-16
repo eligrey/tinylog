@@ -382,13 +382,13 @@ if (!console) {
 		saveButton[$title] = "Click or open a context menu here to save log";
 		saveButton[$setAttr]($data + "symbol", "\u2B07");
 		
-		saveImage[$class]  = $tinylogSpace + $saveButton + "-image";
+		//saveImage[$class]  = $tinylogSpace + $saveButton + "-image";
 		updateSavedLog();
 		
 		closeButton[$class] = $tinylogSpace + $tinylog + "-button " + $tinylog +
 		                        "-close-button";
 		closeButton[$title] = "Close Log";
-		closeButton[$setAttr]($data + "symbol", "X");
+		closeButton[$setAttr]($data + "symbol", "\u2716");
 		
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
 		resizer[$title] = "Double-click to toggle log minimization";
