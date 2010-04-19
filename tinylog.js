@@ -1,7 +1,7 @@
 /*
  * tinylog JavaScript Library
  *
- * 2010-03-16
+ * 2010-04-18
  * 
  * By Elijah Grey, http://eligrey.com
  *
@@ -28,209 +28,110 @@ if (!console) {
 		return String.fromCharCode.apply(String, arguments);
 	},
 	
-	NUL           = stringFromCharCodes(0),
-	blankGIF      = "GIF89a" + stringFromCharCodes(
+	blankGIF = "GIF89a" + stringFromCharCodes(
 		1, 0, 1, 0, 145, 255, 0, 255, 255, 255, 0, 0, 0, 192, 192, 192, 0, 0, 0, 33,
 		249, 4, 1, 0, 0, 2, 0, 44, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 2, 84, 1, 0, 59
 	),
-	blankGIFcheck = new RegExp("^" + blankGIF),
-	nullBytes     = new RegExp(NUL, "g"),
+	blankGIFcheck  = new RegExp("^" + blankGIF),
 	
-	log           = tinylog.logEntries = [],
-	math          = Math,
-	base64        = btoa,
-	encoders      = tinylog.encoders,
-	decoders      = tinylog.decoders,
+	entries        = tinylog.entries = [],
+	encoders       = tinylog.encoders,
+	decoders       = tinylog.decoders,
+	encodings      = tinylog.encodings = ["JSON"],
+	unsupportedEnc = "Unsupported encoding: ",
+	consoleLog,
 	
-	False         = !1,
-	True          = !0,
+	False          = !1,
+	True           = !0,
 	
-	encodeUTF8 = function (data) {
-		return unescape(encodeURIComponent(data));
-	},
-	decodeUTF8 = function (data) {
-		return decodeURIComponent(escape(data));
+	slice = function (arrayLike) {
+		return Array.prototype.slice.call(arrayLike);
 	},
 	storeEntry = function (date, message) {
-		log.push([
-			math.floor(date.getTime() / 1000), // remove milliseconds
+		entries.push([
+			date.getTime(),
 			message
 		]);
-	},
-	serializeRawUInt = function (i) {
-		var buffer = [],
-		pos;
-	
-		pos = math.ceil(math.log(i) / math.log(2) / 8);
-		buffer.push(pos); // int byte-length byte
-
-		while (pos--) {
-			buffer.push(i >>> pos * 8 & 0xFF);
-		}
-
-		return stringFromCharCodes(buffer);
-	},
-	rawLog = function (logData) {
-		if (!logData) {
-			logData = log;
-		}
-		
-		var
-		buffer = [],
-		i      = 0,
-		len    = logData.length;
-		
-		for (; i < len; i++) {
-			buffer.push(
-				serializeRawUInt(logData[i][0]) +
-				// encode UTF-8 string
-				encodeUTF8(logData[i][1].replace(nullBytes, ""))
-			);
-		}
-		
-		return buffer.join(NUL) + NUL;
-	},
-	observer = function (obj, event, handler) {
-		if (obj.addEventListener) {
-			obj.addEventListener(event, handler, False);
-		} else if (obj.attachEvent) {
-			obj.attachEvent("on" + event, handler);
-		}
-		return [obj, event, handler];
-	},
-	unobserve = function (obj, event, handler) {
-		if (obj.removeEventListener) {
-			obj.removeEventListener(event, handler, False);
-		} else if (obj.detachEvent) {
-			obj.detachEvent("on" + event, handler);
-		}
-	},
-	clearChildren = function (node) {
-		var children = node.childNodes,
-		child = children.length;
-		
-		while (child--) {
-			node.removeChild(children.item(0));
-		}
 	},
 	uninit = tinylog.uninit = function () {
 		tinylog.postEntry = storeEntry;
 	},
-	encodeLog = tinylog.encode = function (logData, encoding) {
+	encodeLog = tinylog.encode = function (logEncodings, logData) {
 		if (!logData) {
-			logData = log;
+			logData = entries;
 		}
 		
-		if (!encoding) {
-			encoding = tinylog.encoding;
+		if (!logEncodings) {
+			logEncodings = encodings;
 		}
 		
-		encoding = encoding.split("+");
+		if (typeof logEncodings === "string") {
+			// allow passing a single encoding instead of an array of incodings
+			logEncodings = [logEncodings];
+		}
 		
-		for (var i = 0, len = encoding.length; i < len; i++) {
-			if (encoders[encoding[i]]) {
-				logData = encoders[encoding[i]](logData);
+		for (var i = 0, len = logEncodings.length; i < len; i++) {
+			if (encoders[logEncodings[i]]) {
+				logData = logEncodings[i] + "\n" + encoders[logEncodings[i]](logData);
 			} else {
-				throw new Error("Unsupported encoding: " + encoding[i]);
+				throw new Error(unsupportedEnc + logEncodings[i]);
 			}
 		}
 		
 		return logData;
 	},
-	createLog, consoleLog;
+	setEncodings = tinylog.setEncodings = function () {
+		encodings.length = 0;
+		
+		for (var i = 0, len = arguments.length; i < len; i++) {
+			encodings.push(arguments[i]);
+		}
+	};
 	
 	tinylog.postEntry = storeEntry;
 	
+	tinylog.display =
+	tinylog.setSafetyMargin =
+		function () {};
+	
 	tinylog.log = function () {
-		tinylog.postEntry(new Date(), Array.prototype.slice.call(arguments).join(" "));
+		tinylog.postEntry(new Date(), slice(arguments).join(" "));
 	};
 	
 	tinylog.clear = function () {
-		log.length = 0;
+		entries.length = 0;
 	};
-	
-	encoders.raw = function (log) {
-		return "raw" + NUL + rawLog(log);
-	};
-	
-	decoders.raw = function (data) {
-		var
-		log = [],
-		len = data.length,
-		pos = 0,
-		match, date, bytes;
 		
-		while (pos < len) {
-			date  = 0;
-			bytes = data.charCodeAt(pos++) + pos;
-			
-			for (; pos < bytes; pos++) {
-				date = date << 8 | data.charCodeAt(pos);
-			}
-			
-			match = data.substr(pos).indexOf(NUL);
-			
-			log.push([
-				date * 1000, // convert seconds to milliseconds
-				// decode UTF-8 string
-				decodeUTF8(data.substr(pos++, match))
-			]);
-			
-			pos += match;
-		}
-		
-		return log;
+	encoders.JSON = function (log) {
+		return unescape(encodeURIComponent(JSON.stringify(log)));
 	};
 	
-	encoders.json = function (log) {
-		return "json" + NUL + encodeUTF8(JSON.stringify(log));
+	decoders.JSON = function (data) {
+		return JSON.parse(decodeURIComponent(escape(data)));
 	};
-	
-	decoders.json = function (data) {
-		var log = JSON.parse(decodeUTF8(data)),
-		i = log.length;
-		
-		while (i--) {
-			log[i][0] *= 1000; // convert seconds to milliseconds
-		}
-		
-		return log;
-	};
-	
-	if (!tinylog.encoding) {
-		// by default use raw encoding
-		tinylog.encoding = "raw";
-	}
 	
 	tinylog.decode = function (data) {
 		if (blankGIFcheck.test(data)) {
 			data = data.substr(blankGIF.length);
 		}
 		
-		var index = data.indexOf(NUL),
+		var index = data.indexOf("\n"),
 		encoding  = data.substr(0, index);
 		
 		if (decoders[encoding]) {
 			return decoders[encoding](data.substr(index + 1));
 		} else {
-			throw new Error("Unsupported encoding: " + encoding);
+			throw new Error(unsupportedEnc + encoding);
 		}
 	};
 	
-	if (console.log && tinylog.USE_NATIVE !== False) {
+	if (console.log && !console.TINYLOG) {
 		tinylog.postEntry = function (date, message) {
 			storeEntry(date, message);
 			console.log(message);
 		};
-	} else if (typeof document !== "undefined") { // DOM document
-		createLog = tinylog.postEntry = function (date, message) {
-		// don't show output log until called once
-		
-		var doc = document,
-		view    = doc.defaultView,
-		docElem = doc.documentElement,
-		
-		$div          = "div",
+	} else if (typeof document !== "undefined") { (function () { // DOM document
+		var $div      = "div",
 		$style        = "style",
 		$class        = "className",
 		$setAttr      = "setAttribute",
@@ -242,6 +143,15 @@ if (!console) {
 		$tinylogEntry = $tinylogSpace + "tinylog-entry",
 		$tinylogEntryText = $tinylogEntry + "-text",
 		
+		doc = document,
+		view    = doc.defaultView,
+		docElem = doc.documentElement,
+		base64  = btoa,
+		docElemStyle = docElem[$style],
+		useSafetyMargin = True,
+		changedSinceUpdate = True,
+		postEntry,
+		
 		append = function (to, elem) {
 			return to.appendChild(elem);
 		},
@@ -251,37 +161,62 @@ if (!console) {
 		createTextNode = function (text) {
 			return doc.createTextNode(text);
 		},
+		observer = function (obj, event, handler) {
+			if (obj.addEventListener) {
+				obj.addEventListener(event, handler, False);
+			} else if (obj.attachEvent) {
+				obj.attachEvent("on" + event, handler);
+			}
+			return [obj, event, handler];
+		},
+		unobserve = function (obj, event, handler) {
+			if (obj.removeEventListener) {
+				obj.removeEventListener(event, handler, False);
+			} else if (obj.detachEvent) {
+				obj.detachEvent("on" + event, handler);
+			}
+		},
+		clearChildren = function (node) {
+			var children = node.childNodes,
+			child = children.length;
 		
-		docElemStyle         = docElem[$style],
-		originalPadding      = docElemStyle.paddingBottom,
-		container            = createElement($div),
-		containerStyle       = container[$style],
-		resizer              = append(container, createElement($div)),
-		output               = append(container, createElement($div)),
-		buttons              = append(container, createElement($div)),
-		saveButton           = append(buttons, createElement($div)),
-		saveImage            = append(saveButton, new Image()),
-		closeButton          = append(buttons, createElement($div)),
-		resizingLog          = False,
-		previousHeight       = False,
-		lastEncoding         = tinylog.encoding,
-		changedSinceUpdate   = True,
+			while (child--) {
+				node.removeChild(children.item(0));
+			}
+		},
+		setSafetyMargin = tinylog.setSafetyMargin = function (safetyMarginSetting) {
+			useSafetyMargin = safetyMarginSetting;
+		},
+		
+		createLog = function () {
+		
+		var originalPadding = docElemStyle.paddingBottom,
+		container           = createElement($div),
+		containerStyle      = container[$style],
+		resizer             = append(container, createElement($div)),
+		output              = append(container, createElement($div)),
+		buttons             = append(container, createElement($div)),
+		saveButton          = append(buttons, createElement("a")),
+		saveImage           = append(saveButton, new Image()),
+		closeButton         = append(buttons, createElement($div)),
+		resizingLog         = False,
+		previousHeight      = False,
 		previousScrollTop,
 		
 		updateSafetyMargin = function () {
 			// have a blank space large enough to fit the output box at the page bottom
 			docElemStyle.paddingBottom = container.clientHeight + "px";
 		},
-		updateSavedLog  = function () {
-			if (changedSinceUpdate || lastEncoding !== tinylog.encoding) {
-				saveImage.src = "data:image/gif;base64," + base64(blankGIF + encodeLog());
-				changedSinceUpdate = False;
-				lastEncoding       = tinylog.encoding;
-			}
+		updateSavedLog = function () {
+			saveImage.src = "data:image/gif;base64," + base64(blankGIF + encodeLog());
+			changedSinceUpdate = False;
+			saveButton.href =
+				"data:application/x-tinylog;base64," +
+				base64(encodeLog());
 		},
 		setContainerHeight = function (height) {
 			var viewHeight = view.innerHeight,
-			resizerHeight  = resizer.clientHeight;
+			resizerHeight    = resizer.clientHeight;
 		
 			// constrain the container inside the viewport's dimensions
 			if (height < 0) {
@@ -290,15 +225,15 @@ if (!console) {
 				height = viewHeight - resizerHeight;
 			}
 			
-			containerStyle.height = height / viewHeight * 100 + "%";
+			containerStyle.height = height + "px";
 		
-			if (tinylog.SAFETY_MARGIN !== False) {
+			if (useSafetyMargin) {
 				updateSafetyMargin();
 			}
 		},
 		clearLog = tinylog.clear = function () {
 			clearChildren(output);
-			log.length = 0;
+			entries.length = 0;
 		},
 		observers = [
 			
@@ -339,17 +274,11 @@ if (!console) {
 			}),
 		
 			observer(saveButton, "mouseover", function () {
-				updateSavedLog();
+				if (changedSinceUpdate) {
+					updateSavedLog();
+				}
 			}),
 		
-			// open saved log
-			observer(saveButton, "click", function (evt) {
-				evt.preventDefault();
-				view.location.href =
-					"data:application/vnd.sephr.tinylog;base64," +
-					base64(encodeLog());
-			}),
-			
 			observer(closeButton, "click", function () {
 				uninit();
 			})
@@ -374,7 +303,19 @@ if (!console) {
 			clearChildren(buttons);
 			clearChildren(container);
 			
-			tinylog.postEntry = createLog;
+			tinylog.postEntry = postEntry;
+			tinylog.setEncodings = setEncodings;
+			tinylog.setSafetyMargin = setSafetyMargin;
+		};
+		
+		tinylog.setEncodings = function () {
+			setEncodings.apply(tinylog, arguments);
+			updateSavedLog();
+		};
+		
+		tinylog.setSafetyMargin = function (safetyMarginSetting) {
+			setSafetyMargin(safetyMarginSetting);
+			updateSafetyMargin();
 		};
 		
 		container[$class] = $tinylogSpace + $tinylog + "-container";
@@ -398,38 +339,38 @@ if (!console) {
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
 		resizer[$title] = "Double-click to toggle log minimization";
 		
-		docElem.insertBefore(container, docElem.firstChild);
+		return [container, output];
 		
-		tinylog.postEntry = function (date, message) {
-			var entry = append(output, createElement($div)),
-			entryText = append(entry, createElement($div));
+		},
+		
+		displayLog = tinylog.display = function () {
+			var log = createLog(), // var [container, output] = createLog();
+			container = log[0],
+			output = log[1];
 			
-			entry[$title] = date.toLocaleTimeString();
-			entry[$class] = $tinylogEntry;
-			entryText[$class] = $tinylogEntryText;
+			tinylog.postEntry = function (date, message) {
+				var entry = append(output, createElement($div)),
+				entryText = append(entry, createElement($div));
 			
-			storeEntry(date, message);
-			changedSinceUpdate = True;
+				entry[$title] = date.toLocaleTimeString();
+				entry[$class] = $tinylogEntry;
+				entryText[$class] = $tinylogEntryText;
 			
-			append(entryText, createTextNode(message));
-			output.scrollTop = output.scrollHeight;
+				storeEntry(date, message);
+				changedSinceUpdate = True;
+			
+				append(entryText, createTextNode(message));
+				output.scrollTop = output.scrollHeight;
+			};
+			
+			append(docElem, container);
 		};
 		
-		if (tinylog.SAFETY_MARGIN !== False) {
-			updateSafetyMargin();
-			observers.push(observer(view, "resize", updateSafetyMargin));
-		}
-		
-		if (!tinylog.AUTO_DISPLAY) {
+		postEntry = tinylog.postEntry = function (date, message) {
+			displayLog();
 			tinylog.postEntry(date, message);
-		}
-		
 		};
-		
-		if (tinylog.AUTO_DISPLAY) {
-			tinylog.postEntry();
-		}
-	} else if (typeof print === "function") { // JS console
+	}()); } else if (typeof print === "function") { // JS console
 		tinylog.postEntry = function (date, message) {
 			storeEntry(date, message);
 			print(message);
@@ -439,14 +380,17 @@ if (!console) {
 	if (!console.log) {
 		console.log = tinylog.log;
 	} else {
-		consoleLog = console.log;
-		try { // intercept all console.log calls
+		try {
+			// intercept all console.log calls
 			// Firebug may have problems with redefining console.log
+			consoleLog = console.log;
 			console.log = function () {
-				storeEntry(new Date(), Array.prototype.slice.call(arguments).join(" "));
+				storeEntry(new Date(), slice(arguments).join(" "));
 				consoleLog.apply(console, arguments);
 			};
-		} catch (e) {}
+		} catch (e) {
+			consoleLog = null;
+		}
 	}
 
 }(tinylog, console));
