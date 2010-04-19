@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>tinylog logging demo</title>
-<link rel="stylesheet" type="text/css" href="../themes/default.tinylog.css" />
+<link rel="stylesheet" type="text/css" href="../themes/default.tinylog.css" title="tinylog" />
 </head>
 <body>
 	<div>
@@ -15,19 +15,12 @@
 		<button id="save-button">Save Log</button>
 	</div>
 	<div>
-		<label for="encoding">Format: </label>
-		<select id="encoding">
-			<option selected="selected" value="raw">raw</option>
-			<option value="json">JSON</option>
-		</select>
-	</div>
-	<div>
-		<input id="compression" type="checkbox" checked="checked">
+		<input id="compression" type="checkbox" checked="checked" />
 		<label for="compression"> DEFLATE Compression</label>
 	</div>
-	
-	<script type="text/javascript" src="logging-demo.js"></script>
+	<script type="text/javascript">console.TINYLOG=true</script>
 	<script type="text/javascript" src="../tinylog.min.js"></script>
 	<script type="text/javascript" src="../encoders/deflate.tinylog.min.js"></script>
+	<script type="text/javascript" src="logging-demo.js"></script>
 </body>
 </html>

@@ -1,12 +1,7 @@
 "use strict";
 
-var tinylog = tinylog || {encoders:{}, decoders:{}};
-
 (function (tinylog, doc) {
-	if (typeof console !== "undefined") {
-		tinylog.USE_NATIVE = confirm("A native console has been detected.\nUse it instead of tinylog for the demo?");
-	}
-	tinylog.encoding   = "raw+deflate";
+	tinylog.setEncodings("JSON", "DEFLATE");
 
 	var el = function (id) {
 		return doc.getElementById(id);
@@ -21,15 +16,17 @@ var tinylog = tinylog || {encoders:{}, decoders:{}};
 	
 	observe("save-button", "click", function () {
 		doc.defaultView.location.href =
-			"data:application/vnd.sephr.tinylog;base64," +
+			"data:application/x-tinylog;base64," +
 			btoa(tinylog.encode());
 	});
 	
-	observe("encoding", "change", function (evt) {
-		tinylog.encoding = evt.target.value + (el("compression").checked ? "+deflate" : "");
+	observe("compression", "change", function (evt) {
+		var encodings = ["JSON"];
+		if (evt.target.checked) {
+			encodings.push("DEFLATE");
+		}
+		tinylog.setEncodings.apply(tinylog, encodings);
 	});
 	
-	observe("compression", "change", function (evt) {
-		tinylog.encoding = el("encoding").value + (evt.target.checked ? "+deflate" : "");
-	});
+	tinylog.display();
 }(tinylog, document));
