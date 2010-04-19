@@ -18,7 +18,11 @@
 		<input id="compression" type="checkbox" checked="checked" />
 		<label for="compression"> DEFLATE Compression</label>
 	</div>
-	<script type="text/javascript">console.TINYLOG=true</script>
+	<script type="text/javascript">
+	if (self.console) {
+		console.TINYLOG = !confirm("A native console was detected. Use it instead for this demo?");
+	}
+	</script>
 	<script type="text/javascript" src="../tinylog.min.js"></script>
 	<script type="text/javascript" src="../encoders/deflate.tinylog.min.js"></script>
 	<script type="text/javascript" src="logging-demo.js"></script>
