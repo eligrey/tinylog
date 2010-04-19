@@ -1,7 +1,5 @@
 "use strict";
 
-var tinylog = tinylog || {encoders:{}, decoders:{}};
-
 // http://github.com/dankogai/js-deflate
 
 /*
@@ -1668,9 +1666,9 @@ var zip_deflate = function(str, level) {
 	aout[aout.length] = cbuf.join("");
     }
     zip_deflate_data = null; // G.C.
-    return "deflate\0" + aout.join("");
+    return aout.join("");
 }
 
-tinylog.encoders.deflate = zip_deflate;
+tinylog.encoders.DEFLATE = zip_deflate;
 
 })();
