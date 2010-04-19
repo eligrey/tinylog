@@ -15,17 +15,12 @@
 
 "use strict";
 
-var tinylog = tinylog || {encoders:{}, decoders:{}};
-
 if (typeof document !== "undefined") {
 (function (tinylog, doc) {
 	var logInput  = doc.getElementById("logfile"),
 	fakeInput     = doc.getElementById("fakeinput"),
 	fileNameLabel = doc.getElementById("filename").firstChild,
 	False         = !1;
-	
-	tinylog.USE_NATIVE    = False;
-	tinylog.SAFETY_MARGIN = False;
 	
 	logInput.addEventListener("mouseover", function () {
 		//fakeInput.classList.add("hover");
