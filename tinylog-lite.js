@@ -22,7 +22,11 @@ var tinylogLite = (function () {
 	func            = "function",
 	False           = !1,
 	True            = !0,
-	log             = "log";
+	log             = "log",
+	
+	l = function (string) {
+		return string.toLocaleString();
+	};
 	
 	if (typeof console !== undef && typeof console[log] === func) { // native console
 		tinylogLite[log] = function (message) {
@@ -246,10 +250,10 @@ var tinylogLite = (function () {
 			closeButton, closeButtonStyles
 		);
 		
-		closeButton[$title] = "Close Log";
+		closeButton[$title] = l("Close Log");
 		append(closeButton, createTextNode("\u2716"));
 		
-		resizer[$title] = "Double-click to toggle log minimization";
+		resizer[$title] = l("Double-click to toggle log minimization");
 		
 		docElem.insertBefore(container, docElem.firstChild);
 		

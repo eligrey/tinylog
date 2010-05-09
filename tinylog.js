@@ -27,6 +27,9 @@ if (!console) {
 	var stringFromCharCodes = function () {
 		return String.fromCharCode.apply(String, arguments);
 	},
+	l = function (string) {
+		return string.toLocaleString();
+	},
 	
 	blankGIF = "GIF89a" + stringFromCharCodes(
 		1, 0, 1, 0, 145, 255, 0, 255, 255, 255, 0, 0, 0, 192, 192, 192, 0, 0, 0, 33,
@@ -38,7 +41,7 @@ if (!console) {
 	encoders       = tinylog.encoders,
 	decoders       = tinylog.decoders,
 	encodings      = tinylog.encodings = ["JSON"],
-	unsupportedEnc = "Unsupported encoding: ",
+	unsupportedEnc = l("Unsupported encoding: %s"),
 	consoleLog,
 	
 	False          = !1,
@@ -74,7 +77,7 @@ if (!console) {
 			if (encoders[logEncodings[i]]) {
 				logData = logEncodings[i] + "\n" + encoders[logEncodings[i]](logData);
 			} else {
-				throw new Error(unsupportedEnc + logEncodings[i]);
+				throw new Error(unsupportedEnc.replace("%s", logEncodings[i]));
 			}
 		}
 		
@@ -325,7 +328,7 @@ if (!console) {
 		buttons[$class] = $tinylogSpace + $tinylog + "-buttons-container";
 		
 		saveButton[$class] = $tinylogSpace + $tinylog + "-button " + $saveButton;
-		saveButton[$title] = "Click or open a context menu here to save log";
+		saveButton[$title] = l("Click or open a context menu here to save log");
 		saveButton[$setAttr]($data + "symbol", "\u2B07");
 		
 		saveImage[$class]  = $tinylogSpace + $saveButton + "-image";
@@ -333,11 +336,11 @@ if (!console) {
 		
 		closeButton[$class] = $tinylogSpace + $tinylog + "-button " + $tinylog +
 		                        "-close-button";
-		closeButton[$title] = "Close Log";
+		closeButton[$title] = l("Close Log");
 		closeButton[$setAttr]($data + "symbol", "\u2716");
 		
 		resizer[$class] = $tinylogSpace + $tinylog + "-resizer";
-		resizer[$title] = "Double-click to toggle log minimization";
+		resizer[$title] = l("Double-click to toggle log minimization");
 		
 		return [container, output];
 		
