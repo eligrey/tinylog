@@ -9,7 +9,7 @@ tinylog which is relative to the path you are going to use tinylog on.
 
 1. [Download tinylog][1].
 2. Include the following code in the page you want to use tinylog on:
-   <p><pre><code>&lt;link rel="stylesheet" type="text/css" href="tinylog/themes/default.tinylog.css" title="tinylog" /&gt;</code></pre></p>
+   <p><pre><code>&lt;link rel="stylesheet" type="text/css" href="tinylog/themes/default.tinylog.css" /&gt;</code></pre></p>
 3. Also include this following code in the page too:
    <p><pre><code>&lt;script type="text/javascript" src="tinylog/tinylog.min.js"&gt;&lt;/script&gt;</code></pre></p>
 4. Optionally include any encoder or decoder scripts if needed.
