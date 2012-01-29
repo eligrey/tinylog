@@ -34,8 +34,9 @@ tinylog lite
 
 tinylog lite is a bare-bones implementation of tinylog intended primarily for embedding
 into other libraries. The only API method supported is
-<code>tinylog.<strong title="void">log</strong>()</code>. Theming, configuration, saving
-logs, etc. are not supported in tinylog lite.
+<code>tinylog.<strong title="void">log</strong>()</code>. Saving logs is not supported
+in tinylog lite, and theming must be done directly in the JavaScript code, as opposed
+to CSS.
 
 
 Demos
