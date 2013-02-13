@@ -178,7 +178,7 @@ It is very easy to create custom themes using tinylog. Take a look at the
 [default theme][4] to see what classes there are to style.
 
 
-![Tracking image](//in.getclicky.com/212712ns.gif =1x1)
+![Tracking image](https://in.getclicky.com/212712ns.gif =1x1)
 
 
  [1]: http://github.com/eligrey/tinylog/zipball/master
