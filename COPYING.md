@@ -1,8 +1,8 @@
-This program is licensed under the the MIT/X11 license.
+This program is licensed under the the MIT license.
 
 
-MIT/X11 license
----------------
+MIT license
+-----------
 
 Copyright &copy; 2010 [Eli Grey]
 
